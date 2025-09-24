@@ -1,0 +1,113 @@
+/* --- Main Background and Stars --- */
+.background-container {
+  position: fixed;
+  inset: 0; /* A modern shorthand for top: 0, right: 0, bottom: 0, left: 0 */
+  background-color: #0f0f0f; /* Authentic dark retro color */
+  overflow: hidden;
+  z-index: -1;
+  /* Disables anti-aliasing to keep edges sharp and pixelated */
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.stars {
+  width: 100%;
+  height: 100%;
+  /* Create a starry field with repeating 1px white dots */
+  background-image: 
+    radial-gradient(white 1px, transparent 0),
+    radial-gradient(white 1px, transparent 0);
+  background-size: 
+    40px 40px, /* Density of the first layer of stars */
+    90px 90px;  /* Density of the second, sparser layer */
+  background-position: 
+    0 0, 
+    30px 45px; /* Offset the layers to avoid a perfect grid */
+}
+
+/* --- General Planet Styling --- */
+.planet-container {
+  position: absolute;
+  /* This ensures our pseudo-elements are positioned correctly */
+  transform-style: preserve-3d; 
+}
+
+/* --- Saturn Planet --- */
+.saturn-position {
+  top: 15%;
+  left: 20%;
+  animation: float 25s infinite ease-in-out alternate;
+}
+
+.saturn-body {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2; /* Body is above the back of the ring */
+  
+  /* The two-tone effect using a hard-stop gradient */
+  background: linear-gradient(135deg, #9f59a1 50%, #643565 50%);
+}
+
+/* This is the tricky part: creating the ring effect */
+.saturn-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140px; /* Wider than the planet */
+  height: 140px;
+  transform: translate(-50%, -50%) rotateX(70deg) rotateZ(-10deg);
+}
+
+/* We use ::before for the back half of the ring */
+.saturn-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 4px solid #74f7e2;
+  border-radius: 50%;
+  z-index: 1; /* Behind the planet body */
+}
+
+/* We use ::after for the front half, but clip it so only the front shows */
+.saturn-ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 4px solid #74f7e2;
+  border-radius: 50%;
+  z-index: 3; /* In front of the planet body */
+  /* This clips the back half of this pseudo-element, revealing the planet body */
+  clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 0% 50%);
+}
+
+/* --- Striped Planet --- */
+.striped-planet-position {
+  bottom: 20%;
+  right: 15%;
+  animation: float 30s infinite ease-in-out alternate;
+}
+
+.striped-planet-body {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  /* The three stripes using a hard-stop gradient */
+  background: linear-gradient(to bottom, 
+    #d5a36e 0%, #d5a36e 25%, 
+    #a06b43 25%, #a06b43 75%, 
+    #d5a36e 75%, #d5a36e 100%
+  );
+}
+
+/* --- Animation --- */
+@keyframes float {
+  from {
+    transform: translateY(0px) translateX(0px);
+  }
+  to {
+    transform: translateY(15px) translateX(-10px);
+  }
+}
