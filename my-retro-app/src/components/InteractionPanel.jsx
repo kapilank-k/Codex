@@ -23,7 +23,9 @@ const InteractionPanel = ({ target, onClose }) => {
         setIsLoading(true);
         setProcessedImageUrl(null);
         
-        const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(`8 bit pixel art of ${target.title}, white background`)}`;
+        const prompt = `8 bit pixel art of kim kardashian, white background`;
+        // *** CHANGE HERE: Pointing to the local server now ***
+        const imageUrl = `http://localhost:3001/api/pixel-art?prompt=${encodeURIComponent(prompt)}`;
 
         const img = new Image();
         img.crossOrigin = "Anonymous";
@@ -63,7 +65,7 @@ const InteractionPanel = ({ target, onClose }) => {
 
         img.onerror = () => {
             console.error("Failed to load image from API.");
-            setProcessedImageUrl('https://placehold.co/256x256/0F110C/F28500?text=Error');
+            setProcessedImageUrl('[https://placehold.co/256x256/0F110C/F28500?text=Error](https://placehold.co/256x256/0F110C/F28500?text=Error)');
             setIsLoading(false);
         };
 
