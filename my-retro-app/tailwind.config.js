@@ -7,8 +7,19 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        pixel: ['"Press Start 2P"', 'cursive'], // Add this
+        pixel: ['"Press Start 2P"', 'cursive'],
       },
+      // ADD THIS SECTION
+      keyframes: {
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        }
+      },
+      animation: {
+        'fade-in': 'fade-in 0.5s ease-in-out',
+      }
+      // END OF ADDED SECTION
     },
   },
   plugins: [],
