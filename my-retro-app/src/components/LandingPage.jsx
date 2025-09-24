@@ -12,7 +12,7 @@ const LandingPage = ({ onStartGame }) => {
         }
       `}</style>
       
-      <RetroGameBackground /> 
+      <RetroGameBackground />   
 
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-white p-4">
         <div className="text-center mb-12">
