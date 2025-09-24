@@ -1,17 +1,19 @@
-import React from 'react';
-import PixelButton from './PixelButton';
+import React, { useEffect } from 'react';
+import PixelButton from './PixelButton'; // Make sure this import is correct
 import PixelCursor from '../assets/pixel-hand.png';
 
-// Receive the onStartGame prop
 const LandingPage = ({ onStartGame }) => {
+  // This useEffect hook correctly applies the custom cursor style to the page
+  useEffect(() => {
+    document.body.style.cursor = `url(${PixelCursor}), auto`;
+    // Cleanup function to reset the cursor when we leave the landing page
+    return () => {
+      document.body.style.cursor = 'default';
+    };
+  }, []); // The empty array ensures this runs only once when the component mounts
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#222222] text-white p-4">
-      <style jsx>{`
-        body {
-          cursor: url(${PixelCursor}), auto;
-        }
-      `}</style>
-      
       <div className="text-center mb-12">
         <h1 className="text-6xl md:text-8xl font-pixel text-[#FF0081] mb-4">
           PIXELVERSE
@@ -22,7 +24,7 @@ const LandingPage = ({ onStartGame }) => {
       </div>
 
       <div className="flex flex-col space-y-4">
-        {/* The onClick handler is what triggers the view change */}
+        {/* The onClick handler triggers the view change in App.jsx */}
         <PixelButton label="START" onClick={onStartGame} />
         <PixelButton label="LOAD GAME" />
         <PixelButton label="SETTINGS" />
