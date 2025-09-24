@@ -66,7 +66,7 @@ export default function RightPanel() {
       <div className="pixel-frame-content p-4 sm:p-6 flex flex-col h-full font-pixel">
         
         <header>
-          <h1 className="text-center text-2xl sm:text-3xl text-[#FF5964]">
+          <h1 className="text-center text-2xl sm:text-3xl text-[#FFFFFF]">
             S Y G L
           </h1>
         </header>
@@ -74,13 +74,13 @@ export default function RightPanel() {
         <main className="flex-1 overflow-y-auto py-4 text-xs sm:text-sm">
           {messages.map((msg) => (
             <div key={msg.id} className={`my-4 leading-relaxed ${msg.sender === 'user' ? 'text-right' : 'text-left'}`}>
-              <p className={msg.sender === 'user' ? 'text-[#EBF5DF]' : 'text-[#FF5964]'}>
+              <p className={msg.sender === 'user' ? 'text-[#FFFFFF]' : 'text-[#20C20E]'}>
                 {msg.sender === 'ai' && 'AI: '}
                 {msg.text.split('\n').map((line, i) => <span key={i} className="block">{line}</span>)}
               </p>
             </div>
           ))}
-          {isTyping && <p className="text-left text-[#FF5964]">AI is typing...</p>}
+          {isTyping && <p className="text-left text-[#FFFFFF]">AI is typing...</p>}
           <div ref={messagesEndRef} />
         </main>
 
@@ -109,7 +109,7 @@ export default function RightPanel() {
             />
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 gap-3">
               <button 
-                className="text-[#F28500] hover:text-[#FF5964] transition-colors"
+                className="text-[#20C20E] hover:text-[#FFFFFF] transition-colors"
                 title="Voice Input"
                 onClick={() => alert('Voice input feature coming soon!')}
               >

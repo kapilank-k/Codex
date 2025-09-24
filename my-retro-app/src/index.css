@@ -79,4 +79,11 @@
   .pixel-button:hover {
     background-color: #ff9a21; /* A slightly lighter tangerine for hover */
   }
+
+  /* ADD THIS CLASS */
+  .pixelated {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
 }
