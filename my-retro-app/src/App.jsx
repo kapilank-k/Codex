@@ -3,29 +3,27 @@ import LeftPanel from './components/LeftPanel';
 import RightPanel from './components/RightPanel';
 import InteractionPanel from './components/InteractionPanel';
 import LandingPage from './components/LandingPage';
+import Game from './components/GameItems/Game.jsx'; // 1. Import the new Game component
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import PixelArtBackground from './components/PixelArtBackground';
 
 function App() {
-  // State to decide which view to show. true = LandingPage, false = Main App
   const [showLandingPage, setShowLandingPage] = useState(true);
-  
-  // All your existing state for the main app remains the same
+  const [isGameActive, setIsGameActive] = useState(false); // 2. New state for the game view
   const [interactionTarget, setInteractionTarget] = useState(null);
   const [isLeftPanelVisible, setLeftPanelVisible] = useState(false);
   const [isRightPanelVisible, setRightPanelVisible] = useState(false);
 
-  // This function is passed to the LandingPage to switch views
-  const handleStartGame = () => {
-    setShowLandingPage(false);
-  };
+  const handleStartApp = () => setShowLandingPage(false);
+  
+  // 3. New functions to control the game state
+  const handlePlayGame = () => setIsGameActive(true);
+  const handleExitGame = () => setIsGameActive(false);
 
   const handleStartInteraction = (target) => {
     setInteractionTarget(target);
     setLeftPanelVisible(false);
     setRightPanelVisible(false);
   };
-
   const handleEndInteraction = () => {
     setInteractionTarget(null);
   };
@@ -36,67 +34,65 @@ function App() {
     }
   }, [isLeftPanelVisible, isRightPanelVisible]);
 
-  // --- THE DEFINITIVE FIX: CLEAN VIEW ROUTING ---
-  // If showLandingPage is true, we ONLY render the LandingPage.
-  // It takes full control of the screen.
+  // --- 4. NEW TOP-LEVEL RENDER LOGIC ---
   if (showLandingPage) {
-    return <LandingPage onStartGame={handleStartGame} />;
+    return <LandingPage onStartGame={handleStartApp} />;
   }
 
-  // Otherwise, we render the entire main application with its own layout.
+  if (isGameActive) {
+    return <Game onExitGame={handleExitGame} />;
+  }
+  
+  // The main app view (no changes needed here)
   return (
-    <main className="min-h-screen p-8 sm:p-12 font-mono overflow-hidden relative">
-      <PixelArtBackground />
-      <div className="relative z-10 h-full">
-        <div className="container mx-auto h-[calc(100vh-4rem)] sm:h-[calc(100vh-6rem)] relative">
-          {interactionTarget ? (
-            // Interaction Mode Layout (using the robust Flexbox solution)
-            <div className="relative w-full h-full">
-              <div className="flex w-full h-full gap-8">
-                <div className={`transition-all duration-500 ease-in-out ${isLeftPanelVisible ? 'w-1/3' : 'w-0'}`}>
-                  <div className="h-full overflow-hidden">
-                    <LeftPanel onStartInteraction={handleStartInteraction} />
-                  </div>
-                </div>
-                <div className="flex-grow h-full">
-                  <InteractionPanel target={interactionTarget} onClose={handleEndInteraction} />
-                </div>
-                <div className={`transition-all duration-500 ease-in-out ${isRightPanelVisible ? 'w-1/3' : 'w-0'}`}>
-                  <div className="h-full overflow-hidden">
-                    <RightPanel />
-                  </div>
+    <main className="bg-[#0F110C] min-h-screen p-8 sm:p-12 font-mono overflow-hidden">
+      <div className="container mx-auto h-[calc(100vh-4rem)] sm:h-[calc(100vh-6rem)] relative">
+        {interactionTarget ? (
+          <div className="relative w-full h-full">
+            <div className="flex w-full h-full gap-8">
+              <div className={`transition-all duration-500 ease-in-out ${isLeftPanelVisible ? 'w-1/3' : 'w-0'}`}>
+                <div className="h-full overflow-hidden">
+                  <LeftPanel onStartInteraction={handleStartInteraction} onPlayGame={handlePlayGame} />
                 </div>
               </div>
-              <button
-                onClick={() => setLeftPanelVisible(!isLeftPanelVisible)}
-                className="absolute top-1/2 -translate-y-1/2 left-0 z-30 bg-[#F28500] p-3 rounded-r-lg text-[#0F110C] hover:bg-[#ff9a21]"
-                aria-label="Toggle Left Panel"
-              >
-                {isLeftPanelVisible ? <FaArrowLeft /> : <FaArrowRight />}
-              </button>
-              <button
-                onClick={() => setRightPanelVisible(!isRightPanelVisible)}
-                className="absolute top-1/2 -translate-y-1/2 right-0 z-30 bg-[#F28500] p-3 rounded-l-lg text-[#0F110C] hover:bg-[#ff9a21]"
-                aria-label="Toggle Right Panel"
-              >
-                {isRightPanelVisible ? <FaArrowRight /> : <FaArrowLeft />}
-              </button>
-            </div>
-          ) : (
-            // Default Two-Panel View
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
-              <div>
-                <LeftPanel onStartInteraction={handleStartInteraction} />
+              <div className="flex-grow h-full">
+                <InteractionPanel target={interactionTarget} onClose={handleEndInteraction} />
               </div>
-              <div>
-                <RightPanel />
+              <div className={`transition-all duration-500 ease-in-out ${isRightPanelVisible ? 'w-1/3' : 'w-0'}`}>
+                <div className="h-full overflow-hidden">
+                  <RightPanel />
+                </div>
               </div>
             </div>
-          )}
-        </div>
+            <button
+              onClick={() => setLeftPanelVisible(!isLeftPanelVisible)}
+              className="absolute top-1/2 -translate-y-1/2 left-0 z-30 bg-[#F28500] p-3 rounded-r-lg text-[#0F110C] hover:bg-[#ff9a21]"
+              aria-label="Toggle Left Panel"
+            >
+              {isLeftPanelVisible ? <FaArrowLeft /> : <FaArrowRight />}
+            </button>
+            <button
+              onClick={() => setRightPanelVisible(!isRightPanelVisible)}
+              className="absolute top-1/2 -translate-y-1/2 right-0 z-30 bg-[#F28500] p-3 rounded-l-lg text-[#0F110C] hover:bg-[#ff9a21]"
+              aria-label="Toggle Right Panel"
+            >
+              {isRightPanelVisible ? <FaArrowRight /> : <FaArrowLeft />}
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+            <div>
+              <LeftPanel onStartInteraction={handleStartInteraction} onPlayGame={handlePlayGame} />
+            </div>
+            <div>
+              <RightPanel />
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );
 }
 
 export default App;
+
