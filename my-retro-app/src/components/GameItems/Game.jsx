@@ -2,8 +2,8 @@
 
 import React, { useRef, useState, useCallback } from 'react'; // 1. Import useCallback
 import { useGameLogic } from './useGameLogic.js';
-import RightPanel from '../UI/RightPanel.jsx';
-import PixelArtBackground from '../UI/PixelArtBackground.jsx';
+import RightPanel from '../UI_temp/RightPanel.jsx';
+import PixelArtBackground from '../UI_temp/PixelArtBackground.jsx';
 
 const Game = ({ onExitGame }) => { // 2. Receive the onExitGame prop from App.jsx
     const canvasRef = useRef(null);

@@ -1,25 +1,33 @@
+// src/App.jsx
+
 import React, { useState, useEffect } from 'react';
 import LeftPanel from './components/LeftPanel';
-import RightPanel from './components/RightPanel';
+import RightPanel from './components/UI_temp/RightPanel'; // Correct path to UI component
 import InteractionPanel from './components/InteractionPanel';
 import LandingPage from './components/LandingPage';
 import DocumentUploadPage from './components/DocumentUploadPage';
-import Game from './components/GameItems/Game.jsx'; // 1. Import the new Game component
+import Game from './components/GameItems/Game.jsx'; // Correct path to Game component
+import PixelArtBackground from './components/UI_temp/PixelArtBackground.jsx'; // 1. ADDED: Missing import
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 function App() {
   const [showLandingPage, setShowLandingPage] = useState(true);
   const [showUploadPage, setShowUploadPage] = useState(false);
-const [isGameActive, setIsGameActive] = useState(false); // 2. New state for the game view
+  const [isGameActive, setIsGameActive] = useState(false);
   const [interactionTarget, setInteractionTarget] = useState(null);
   const [isLeftPanelVisible, setLeftPanelVisible] = useState(false);
   const [isRightPanelVisible, setRightPanelVisible] = useState(false);
 
-  const handleStartApp = () => setShowLandingPage(false);
+  // 2. FIXED: Function body was not correctly enclosed in curly braces {}
+  const handleStartApp = () => {
+    setShowLandingPage(false);
     setShowUploadPage(true);
+  };
   
-  // 3. New functions to control the game state
-  const handlePlayGame = () => setIsGameActive(true);
+  const handlePlayGame = () => {
+    setShowUploadPage(false); // Ensure upload page is hidden when game starts
+    setIsGameActive(true);
+  }
   const handleExitGame = () => setIsGameActive(false);
 
   const handleStartInteraction = (target) => {
@@ -37,7 +45,7 @@ const [isGameActive, setIsGameActive] = useState(false); // 2. New state for the
     }
   }, [isLeftPanelVisible, isRightPanelVisible]);
 
-  // --- 4. NEW TOP-LEVEL RENDER LOGIC ---
+  // --- TOP-LEVEL RENDER LOGIC ---
   if (showLandingPage) {
     return <LandingPage onStartGame={handleStartApp} />;
   }
@@ -46,19 +54,18 @@ const [isGameActive, setIsGameActive] = useState(false); // 2. New state for the
     return <Game onExitGame={handleExitGame} />;
   }
 
-  // Show DocumentUploadPage after landing page
   if (showUploadPage) {
     return <DocumentUploadPage onStartMainApp={() => setShowUploadPage(false)} />;
   }
   
-  // The main app view (no changes needed here)
+  // The main app view
   return (
     <main className="min-h-screen p-8 sm:p-12 font-mono overflow-hidden relative">
       <PixelArtBackground />
       <div className="relative z-10 h-full">
         <div className="container mx-auto h-[calc(100vh-4rem)] sm:h-[calc(100vh-6rem)] relative">
           {interactionTarget ? (
-            // Interaction Mode Layout (using the robust Flexbox solution)
+            // Interaction Mode Layout
             <div className="relative w-full h-full">
               <div className="flex w-full h-full gap-8">
                 <div className={`transition-all duration-500 ease-in-out ${isLeftPanelVisible ? 'w-1/3' : 'w-0'}`}>
@@ -94,7 +101,8 @@ const [isGameActive, setIsGameActive] = useState(false); // 2. New state for the
             // Default Two-Panel View
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
               <div>
-                <LeftPanel onStartInteraction={handleStartInteraction} />
+                {/* 3. FIXED: Added the missing onPlayGame prop */}
+                <LeftPanel onStartInteraction={handleStartInteraction} onPlayGame={handlePlayGame} />
               </div>
               <div>
                 <RightPanel />
@@ -108,4 +116,3 @@ const [isGameActive, setIsGameActive] = useState(false); // 2. New state for the
 }
 
 export default App;
-
