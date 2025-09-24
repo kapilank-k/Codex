@@ -3,6 +3,7 @@ import LeftPanel from './components/LeftPanel';
 import RightPanel from './components/RightPanel';
 import InteractionPanel from './components/InteractionPanel';
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import PixelArtBackground from './PixelArtBackground';
 
 function App() {
   const [interactionTarget, setInteractionTarget] = useState(null);
