@@ -14,13 +14,67 @@ const PixelArtPlaceholder = () => (
 );
 
 const InteractionPanel = ({ target, onClose }) => {
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(`pixel art of mahatma gandhi standing as if he is speaking, transparent background,full body image,8-bit, FRONTAL VIEW`)}`;
+  const [processedImageUrl, setProcessedImageUrl] = React.useState(null);
+    const [isLoading, setIsLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        if (!target) return;
+
+        setIsLoading(true);
+        setProcessedImageUrl(null);
+        
+        const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(`8 bit pixel art of ${target.title}, white background`)}`;
+
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            
+            canvas.width = img.naturalWidth || 256;
+            canvas.height = img.naturalHeight || 256;
+            
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            try {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+                    
+                    if (r > 240 && g > 240 && b > 240) {
+                        data[i + 3] = 0;
+                    }
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+                setProcessedImageUrl(canvas.toDataURL('image/png'));
+            } catch (error) {
+                console.error("Canvas processing failed:", error);
+                setProcessedImageUrl(img.src);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        img.onerror = () => {
+            console.error("Failed to load image from API.");
+            setProcessedImageUrl('https://placehold.co/256x256/0F110C/F28500?text=Error');
+            setIsLoading(false);
+        };
+
+        img.src = imageUrl;
+
+    }, [target]);
 
     return (
         <div className="pixel-frame h-full w-full animate-fade-in">
             <div className="pixel-frame-content p-4 sm:p-6 flex flex-col h-full relative">
                 
-                {/* Button Container: This keeps the button at the top */}
                 <div className="flex-shrink-0 mb-4">
                     <button 
                         onClick={onClose} 
@@ -31,7 +85,6 @@ const InteractionPanel = ({ target, onClose }) => {
                     </button>
                 </div>
 
-                {/* Main content area */}
                 <div className="flex-grow flex flex-col justify-center items-center gap-4 text-center overflow-y-auto">
                     <div className="w-full max-w-2xl">
                         <div className="pixel-frame">
@@ -42,25 +95,23 @@ const InteractionPanel = ({ target, onClose }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="my-4">
-                        {/* The static SVG is replaced with a dynamic image tag */}
-                        <img 
-                            src={imageUrl} 
-                            alt={`Pixel art of ${target.title}`}
-                            width="300" 
-                            height="300" 
-                            className="mx-auto" 
-                            style={{ imageRendering: 'pixelated' }}
-                            // Provides a fallback if the image fails to load
-                            onError={(e) => { 
-                                e.target.onerror = null; 
-                                e.target.src='https://placehold.co/128x128/0F110C/F28500?text=Error'; 
-                            }}
-                        />
+                    <div className="my-4 flex items-center justify-center" style={{ width: 256, height: 256 }}>
+                        {isLoading && (
+                           <div className="font-pixel text-sm text-gray-400">LOADING ART...</div>
+                        )}
+                        {processedImageUrl && !isLoading && (
+                            <img 
+                                src={processedImageUrl} 
+                                alt={`Pixel art of ${target.title}`}
+                                width="256" 
+                                height="256" 
+                                className="mx-auto" 
+                                style={{ imageRendering: 'pixelated' }}
+                            />
+                        )}
                     </div>
                 </div>
 
-                {/* Bottom Input Form */}
                 <div className="relative mt-4 flex-shrink-0">
                     <input
                         type="text"
