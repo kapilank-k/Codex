@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaPlay } from 'react-icons/fa'; // Import the play icon
 
 // --- BACKEND PLACEHOLDER ---
+// We've added a new module and a special subsection with `isInteraction: true`
 const modulesData = [
   {
     id: 1,

@@ -1,7 +1,7 @@
 import React from 'react';
-import PlanetBackground from './RetroGameBackground'; 
+import RetroGameBackground from './RetroGameBackground'; 
 import PixelCursor from '../assets/pixel-hand.png';
-import RetroGameBackground from './RetroGameBackground';
+import PixelButton from './PixelButton'; // Import the new PixelButton component
 
 const LandingPage = ({ onStartGame }) => {
   return (
@@ -17,23 +17,20 @@ const LandingPage = ({ onStartGame }) => {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-white p-4">
         <div className="text-center mb-12">
           <h1 className="text-6xl md:text-8xl font-pixel text-[#FF0081] mb-4">
-            SYGL
+            S Y G L
           </h1>
           <p className="text-2xl md:text-3xl font-pixel-regular text-[#EF7B45]">
             learning through exploring, it's history but with a twist....
           </p>
         </div>
 
-        <button 
+        {/* Replaced the old button with the new PixelButton component */}
+        <PixelButton 
           onClick={onStartGame} 
-          className="
-            bg-[#EF7B45] text-[#222222] font-pixel-regular text-2xl px-8 py-2 border-4 
-            border-[#FF0081] rounded-sm transition-colors duration-200
-            hover:bg-[#FF0081] hover:text-white
-          "
+          type="primary" // This style matches the original button's colors
         >
           START
-        </button>
+        </PixelButton>
 
         <div className="absolute bottom-8 right-8">
           <div className="bg-[#222222] border-2 border-[#707070] p-4 text-[#FFFFFF] font-pixel-regular text-sm">

@@ -1,7 +1,4 @@
 import React from 'react';
-
-// This component creates a subtle, twinkling starfield effect.
-// It uses a canvas element for performance and is designed to sit behind all other content.
 const PixelArtBackground = () => {
     const canvasRef = React.useRef(null);
 
@@ -17,7 +14,7 @@ const PixelArtBackground = () => {
             starColor: '#20C20E', // Matches your button color
             starCount: 200,
             pixelSize: 8,
-            twinkleSpeed: 0.05,
+            twinkleSpeed: 0.01,
         };
 
         let stars = [];
@@ -107,4 +104,3 @@ const PixelArtBackground = () => {
 };
 
 export default PixelArtBackground;
-
