@@ -3,15 +3,47 @@
 @tailwind utilities;
 
 @layer components {
-  .jagged-border {
-    /* Tangerine color */
-    background-color: #F28500;
-    padding: 12px; /* Add padding to create the "border" effect */
-    
-    /* This creates the jagged, imperfect shape */
+  /* This is the main container that holds the border */
+  .pixel-frame {
+    position: relative;
+    padding: 1px; /* This padding defines the thickness of the border */
+    background: #F28500; /* Tangerine color for the border */
     clip-path: polygon(
-      0% 5%, 4% 0%, 10% 3%, 15% 0%, 20% 4%, 26% 0%, 30% 5%, 35% 2%, 40% 6%, 45% 1%, 50% 5%, 55% 0%, 60% 4%, 65% 1%, 70% 5%, 75% 2%, 80% 6%, 85% 0%, 90% 4%, 95% 1%, 100% 6%,
-      96% 100%, 90% 97%, 85% 100%, 80% 96%, 75% 100%, 70% 95%, 65% 100%, 60% 96%, 55% 100%, 50% 95%, 45% 100%, 40% 97%, 35% 100%, 30% 96%, 25% 100%, 20% 95%, 15% 100%, 10% 96%, 5% 100%, 0% 95%
+      0px calc(100% - 40px), 8px calc(100% - 40px), 8px calc(100% - 24px),
+      16px calc(100% - 24px), 16px calc(100% - 16px), 24px calc(100% - 16px),
+      24px calc(100% - 8px), 40px calc(100% - 8px), 40px 100%,
+      calc(100% - 40px) 100%, calc(100% - 40px) calc(100% - 8px),
+      calc(100% - 24px) calc(100% - 8px), calc(100% - 24px) calc(100% - 16px),
+      calc(100% - 16px) calc(100% - 16px), calc(100% - 16px) calc(100% - 24px),
+      calc(100% - 8px) calc(100% - 24px), calc(100% - 8px) calc(100% - 40px),
+      100% calc(100% - 40px), 100% 40px, calc(100% - 8px) 40px,
+      calc(100% - 8px) 24px, calc(100% - 16px) 24px, calc(100% - 16px) 16px,
+      calc(100% - 24px) 16px, calc(100% - 24px) 8px,
+      calc(100% - 40px) 8px, calc(100% - 40px) 0px, 40px 0px, 40px 8px,
+      24px 8px, 24px 16px, 16px 16px, 16px 24px, 8px 24px, 8px 40px,
+      0px 40px
+    );
+  }
+
+  /* This is for the inner content area, which needs its own clip-path to fit inside the frame */
+  .pixel-frame-content {
+    background-color: #0F110C; /* The dark background */
+    height: 100%;
+    clip-path: polygon(
+      8px 40px, 16px 40px, 16px 24px, 24px 24px, 24px 16px, 40px 16px,
+      40px 8px, calc(100% - 40px) 8px, calc(100% - 40px) 16px,
+      calc(100% - 24px) 16px, calc(100% - 24px) 24px,
+      calc(100% - 16px) 24px, calc(100% - 16px) 40px,
+      calc(100% - 8px) 40px, calc(100% - 8px) calc(100% - 40px),
+      calc(100% - 16px) calc(100% - 40px),
+      calc(100% - 16px) calc(100% - 24px),
+      calc(100% - 24px) calc(100% - 24px),
+      calc(100% - 24px) calc(100% - 16px),
+      calc(100% - 40px) calc(100% - 16px),
+      calc(100% - 40px) calc(100% - 8px), 40px calc(100% - 8px),
+      40px calc(100% - 16px), 24px calc(100% - 16px),
+      24px calc(100% - 24px), 16px calc(100% - 24px),
+      16px calc(100% - 40px), 8px calc(100% - 40px)
     );
   }
 }
