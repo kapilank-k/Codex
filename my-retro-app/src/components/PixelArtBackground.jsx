@@ -14,7 +14,7 @@ const PixelArtBackground = () => {
 
         // Configuration for the stars
         const config = {
-            starColor: '#F28500', // Matches your button color
+            starColor: '#20C20E', // Matches your button color
             starCount: 200,
             pixelSize: 8,
             twinkleSpeed: 0.05,

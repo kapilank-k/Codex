@@ -15,8 +15,8 @@ const LandingPage = ({ onStartGame }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#222222] text-white p-4">
       <div className="text-center mb-12">
-        <h1 className="text-6xl md:text-8xl font-pixel text-[#FF0081] mb-4">
-          PIXELVERSE
+        <h1 className="text-6xl md:text-8xl font-pixel text-[#FF0081] mb-8">
+          S  Y  G  L
         </h1>
         <p className="text-2xl md:text-3xl font-pixel-regular text-[#EF7B45]">
           A new adventure awaits...
@@ -26,8 +26,6 @@ const LandingPage = ({ onStartGame }) => {
       <div className="flex flex-col space-y-4">
         {/* The onClick handler triggers the view change in App.jsx */}
         <PixelButton label="START" onClick={onStartGame} />
-        <PixelButton label="LOAD GAME" />
-        <PixelButton label="SETTINGS" />
       </div>
 
       <div className="absolute bottom-8 right-8">
