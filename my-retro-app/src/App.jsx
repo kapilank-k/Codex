@@ -3,13 +3,15 @@ import LeftPanel from './components/LeftPanel';
 import RightPanel from './components/RightPanel';
 import InteractionPanel from './components/InteractionPanel';
 import LandingPage from './components/LandingPage';
+import DocumentUploadPage from './components/DocumentUploadPage';
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import PixelArtBackground from './components/PixelArtBackground';
 
 function App() {
   // State to decide which view to show. true = LandingPage, false = Main App
   const [showLandingPage, setShowLandingPage] = useState(true);
-  
+  const [showUploadPage, setShowUploadPage] = useState(false);
+
   // All your existing state for the main app remains the same
   const [interactionTarget, setInteractionTarget] = useState(null);
   const [isLeftPanelVisible, setLeftPanelVisible] = useState(false);
@@ -18,6 +20,7 @@ function App() {
   // This function is passed to the LandingPage to switch views
   const handleStartGame = () => {
     setShowLandingPage(false);
+    setShowUploadPage(true);
   };
 
   const handleStartInteraction = (target) => {
@@ -41,6 +44,11 @@ function App() {
   // It takes full control of the screen.
   if (showLandingPage) {
     return <LandingPage onStartGame={handleStartGame} />;
+  }
+
+  // Show DocumentUploadPage after landing page
+  if (showUploadPage) {
+    return <DocumentUploadPage onStartMainApp={() => setShowUploadPage(false)} />;
   }
 
   // Otherwise, we render the entire main application with its own layout.

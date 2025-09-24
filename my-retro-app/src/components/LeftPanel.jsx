@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // --- BACKEND PLACEHOLDER ---
 // We've added a new module and a special subsection with `isInteraction: true`
-const modulesData = [
+const modulesData = [ 
   {
     id: 1,
     name: 'MODULE_GANDHI',

@@ -17,7 +17,9 @@ const PixelArtBackground = () => {
             starColor: '#20C20E', // Matches your button color
             starCount: 200,
             pixelSize: 8,
-            twinkleSpeed: 0.05,
+            // --- VALUE CHANGED HERE ---
+            // Decreased from 0.05 to make the twinkle effect slower.
+            twinkleSpeed: 0.01,
         };
 
         let stars = [];
@@ -107,4 +109,3 @@ const PixelArtBackground = () => {
 };
 
 export default PixelArtBackground;
-
