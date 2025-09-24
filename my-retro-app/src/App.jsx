@@ -36,16 +36,13 @@ function App() {
     }
   }, [isLeftPanelVisible, isRightPanelVisible]);
 
-  // --- THE DEFINITIVE FIX: CLEAN VIEW ROUTING ---
-  // If showLandingPage is true, we ONLY render the LandingPage.
-  // It takes full control of the screen.
   if (showLandingPage) {
     return <LandingPage onStartGame={handleStartGame} />;
   }
 
   // Otherwise, we render the entire main application with its own layout.
   return (
-    <main className="min-h-screen p-8 sm:p-12 font-mono overflow-hidden relative">
+    <main className="h-screen p-8 sm:p-12 font-mono overflow-hidden relative">
       <PixelArtBackground />
       <div className="relative z-10 h-full">
         <div className="container mx-auto h-[calc(100vh-4rem)] sm:h-[calc(100vh-6rem)] relative">
