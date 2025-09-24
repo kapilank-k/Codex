@@ -25,11 +25,46 @@ const DocumentUploadPage = ({ onStartMainApp }) => {
     }
   };
 
+  const handleChooseFileClick = () => {
+    // This will open the file dialog box
+    fileInputRef.current.click();
+  };
+
   return (
     <div className="relative overflow-hidden min-h-screen">
       <style jsx>{`
         body {
           cursor: url(${PixelCursor}), auto;
+        }
+        .pixel-button {
+          font-family: 'pixel-regular', monospace;
+          font-size: 1.25rem;
+          padding: 0.5rem 2rem;
+          border-width: 4px;
+          border-style: solid;
+          border-radius: 4px;
+          transition-property: background-color, color;
+          transition-duration: 200ms;
+          cursor: pointer;
+        }
+        .pixel-button.choose-file {
+          background-color: #EF7B45;
+          color: #222222;
+          border-color: #FF0081;
+        }
+        .pixel-button.choose-file:hover {
+          background-color: #FF0081;
+          color: white;
+        }
+        .pixel-button.start {
+          background-color: #FF0081;
+          color: white;
+          border-color: #EF7B45;
+          margin-top: 1.5rem;
+        }
+        .pixel-button.start:hover {
+          background-color: #EF7B45;
+          color: #222222;
         }
       `}</style>
       <RetroGameBackground />
@@ -42,13 +77,16 @@ const DocumentUploadPage = ({ onStartMainApp }) => {
             Upload your PDF or Word document below
           </p>
         </div>
+        
+        {/* The hidden input element that will handle the file selection */}
         <input
           ref={fileInputRef}
           type="file"
           accept=".pdf,.doc,.docx"
           onChange={handleFileChange}
-          className="bg-[#222222] text-[#EF7B45] font-pixel-regular text-lg px-4 py-2 border-4 border-[#FF0081] rounded-sm mb-4 focus:outline-none"
+          style={{ display: 'none' }} /* This is how we hide it */
         />
+
         {error && (
           <div className="text-[#FF0081] font-pixel-regular mb-2">{error}</div>
         )}
@@ -57,18 +95,22 @@ const DocumentUploadPage = ({ onStartMainApp }) => {
             Selected file: {selectedFile.name}
           </div>
         )}
+
+        {/* The "Choose File" button that triggers the hidden input */}
         <button
-          className="bg-[#EF7B45] text-[#222222] font-pixel-regular text-xl px-8 py-2 border-4 border-[#FF0081] rounded-sm transition-colors duration-200 hover:bg-[#FF0081] hover:text-white"
-          onClick={() => fileInputRef.current && fileInputRef.current.click()}
+          className="pixel-button choose-file"
+          onClick={handleChooseFileClick}
         >
           Choose File
         </button>
-          <button
-            className="bg-[#FF0081] text-white font-pixel-regular text-xl px-8 py-2 border-4 border-[#EF7B45] rounded-sm transition-colors duration-200 hover:bg-[#EF7B45] hover:text-[#222222] mt-6"
-            onClick={typeof onStartMainApp === 'function' ? onStartMainApp : undefined}
-          >
-            START
-          </button>
+
+        {/* The "START" button */}
+        <button
+          className="pixel-button start"
+          onClick={typeof onStartMainApp === 'function' ? onStartMainApp : undefined}
+        >
+          START
+        </button>
       </div>
     </div>
   );
