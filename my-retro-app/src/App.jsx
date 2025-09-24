@@ -1,34 +1,40 @@
+// src/App.jsx
+
 import React, { useState, useEffect } from 'react';
 import LeftPanel from './components/LeftPanel';
-import RightPanel from './components/RightPanel';
+import RightPanel from './components/UI_temp/RightPanel'; // Correct path to UI component
 import InteractionPanel from './components/InteractionPanel';
 import LandingPage from './components/LandingPage';
 import DocumentUploadPage from './components/DocumentUploadPage';
+import Game from './components/GameItems/Game.jsx'; // Correct path to Game component
+import PixelArtBackground from './components/UI_temp/PixelArtBackground.jsx'; // 1. ADDED: Missing import
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import PixelArtBackground from './components/PixelArtBackground';
 
 function App() {
-  // State to decide which view to show. true = LandingPage, false = Main App
   const [showLandingPage, setShowLandingPage] = useState(true);
   const [showUploadPage, setShowUploadPage] = useState(false);
-
-  // All your existing state for the main app remains the same
+  const [isGameActive, setIsGameActive] = useState(false);
   const [interactionTarget, setInteractionTarget] = useState(null);
   const [isLeftPanelVisible, setLeftPanelVisible] = useState(false);
   const [isRightPanelVisible, setRightPanelVisible] = useState(false);
 
-  // This function is passed to the LandingPage to switch views
-  const handleStartGame = () => {
+  // 2. FIXED: Function body was not correctly enclosed in curly braces {}
+  const handleStartApp = () => {
     setShowLandingPage(false);
     setShowUploadPage(true);
   };
+  
+  const handlePlayGame = () => {
+    setShowUploadPage(false); // Ensure upload page is hidden when game starts
+    setIsGameActive(true);
+  }
+  const handleExitGame = () => setIsGameActive(false);
 
   const handleStartInteraction = (target) => {
     setInteractionTarget(target);
     setLeftPanelVisible(false);
     setRightPanelVisible(false);
   };
-
   const handleEndInteraction = () => {
     setInteractionTarget(null);
   };
@@ -39,28 +45,32 @@ function App() {
     }
   }, [isLeftPanelVisible, isRightPanelVisible]);
 
+  // --- TOP-LEVEL RENDER LOGIC ---
   if (showLandingPage) {
-    return <LandingPage onStartGame={handleStartGame} />;
+    return <LandingPage onStartGame={handleStartApp} />;
   }
 
-  // Show DocumentUploadPage after landing page
+  if (isGameActive) {
+    return <Game onExitGame={handleExitGame} />;
+  }
+
   if (showUploadPage) {
     return <DocumentUploadPage onStartMainApp={() => setShowUploadPage(false)} />;
   }
-
-  // Otherwise, we render the entire main application with its own layout.
+  
+  // The main app view
   return (
-    <main className="h-screen p-8 sm:p-12 font-mono overflow-hidden relative">
+    <main className="min-h-screen p-8 sm:p-12 font-mono overflow-hidden relative">
       <PixelArtBackground />
       <div className="relative z-10 h-full">
         <div className="container mx-auto h-[calc(100vh-4rem)] sm:h-[calc(100vh-6rem)] relative">
           {interactionTarget ? (
-            // Interaction Mode Layout (using the robust Flexbox solution)
+            // Interaction Mode Layout
             <div className="relative w-full h-full">
               <div className="flex w-full h-full gap-8">
                 <div className={`transition-all duration-500 ease-in-out ${isLeftPanelVisible ? 'w-1/3' : 'w-0'}`}>
                   <div className="h-full overflow-hidden">
-                    <LeftPanel onStartInteraction={handleStartInteraction} />
+                    <LeftPanel onStartInteraction={handleStartInteraction} onPlayGame={handlePlayGame} />
                   </div>
                 </div>
                 <div className="flex-grow h-full">
@@ -91,7 +101,8 @@ function App() {
             // Default Two-Panel View
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
               <div>
-                <LeftPanel onStartInteraction={handleStartInteraction} />
+                {/* 3. FIXED: Added the missing onPlayGame prop */}
+                <LeftPanel onStartInteraction={handleStartInteraction} onPlayGame={handlePlayGame} />
               </div>
               <div>
                 <RightPanel />
