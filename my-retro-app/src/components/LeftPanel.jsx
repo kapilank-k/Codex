@@ -35,21 +35,20 @@ const LeftPanel = () => {
   const selectedModule = modulesData.find(m => m.id === activeModule);
 
   return (
-    // Use the new jagged-border class
-    <div className="jagged-border h-full">
-        {/* The inner div will have the dark background */}
-        <div className="bg-[#0F110C] h-full p-4 text-[#60A5FA] flex flex-col gap-4"> {/* Changed text color to bubblegum blue */}
+    // Use the new frame class for the outer container
+    <div className="pixel-frame h-full">
+        {/* Use the new content class for the inner div */}
+        <div className="pixel-frame-content p-4 text-[#60A5FA] flex flex-col gap-4">
             {modulesData.map((module) => (
                 <div key={module.id}>
                 <h2
-                    // Added font-pixel and updated colors
                     className={`font-pixel cursor-pointer p-2 text-sm md:text-base ${activeModule === module.id ? 'bg-[#F28500] text-[#0F110C]' : 'hover:bg-[#F28500]/20'}`}
                     onClick={() => handleModuleClick(module.id)}
                 >
                     {`> ${module.name}`}
                 </h2>
                 {activeModule === module.id && selectedModule && (
-                    <div className="pl-6 pt-2 flex flex-col gap-1 font-mono"> {/* Use standard font for subsections */}
+                    <div className="pl-6 pt-2 flex flex-col gap-1 font-mono">
                     {selectedModule.subsections.map((sub) => (
                         <p key={sub.id} className="text-sm cursor-pointer hover:underline">{sub.title}</p>
                     ))}
