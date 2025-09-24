@@ -1,14 +1,12 @@
 import React from 'react';
 
-const PixelButton = ({ onClick, children, className = '' }) => {
+const PixelButton = ({ label, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className={`pixel-frame !p-2 bg-[#F28500] hover:bg-[#ff9a21] text-[#0F110C] font-pixel text-sm ${className}`}
+      className="bg-[#EF7B45] text-[#222222] font-pixel text-2xl py-3 px-16 border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-b-[#707070] border-r-[#707070] active:border-t-[#707070] active:border-l-[#707070] active:border-b-[#FFFFFF] active:border-r-[#FFFFFF] transition-colors"
     >
-      <div className="pixel-frame-content !bg-transparent flex items-center justify-center gap-2">
-        {children}
-      </div>
+      {label}
     </button>
   );
 };

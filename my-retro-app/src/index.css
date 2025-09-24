@@ -46,4 +46,37 @@
       16px calc(100% - 40px), 8px calc(100% - 40px)
     );
   }
+   /* ADD THIS NEW CLASS FOR THE BUTTON */
+  .pixel-button {
+    background-color: #F28500; /* Tangerine fill color */
+    color: #0F110C; /* Black text color for contrast */
+    padding: 10px 20px; /* Provides space for the text */
+    border: none;
+    cursor: pointer;
+    position: relative;
+    display: inline-flex; /* Helps align icon and text */
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    transition: background-color 0.2s ease;
+
+    /* This is the clip-path from your example to create the shape */
+    clip-path: polygon(
+      0px calc(100% - 20px), 4px calc(100% - 20px), 4px calc(100% - 12px),
+      8px calc(100% - 12px), 8px calc(100% - 8px), 12px calc(100% - 8px),
+      12px calc(100% - 4px), 20px calc(100% - 4px), 20px 100%,
+      calc(100% - 20px) 100%, calc(100% - 20px) calc(100% - 4px),
+      calc(100% - 12px) calc(100% - 4px), calc(100% - 12px) calc(100% - 8px),
+      calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) calc(100% - 12px),
+      calc(100% - 4px) calc(100% - 12px), calc(100% - 4px) calc(100% - 20px),
+      100% calc(100% - 20px), 100% 20px, calc(100% - 4px) 20px,
+      calc(100% - 4px) 12px, calc(100% - 8px) 12px, calc(100% - 8px) 8px,
+      calc(100% - 12px) 8px, calc(100% - 12px) 4px,
+      calc(100% - 20px) 4px, calc(100% - 20px) 0px, 20px 0px, 20px 4px,
+      12px 4px, 12px 8px, 8px 8px, 8px 12px, 4px 12px, 4px 20px, 0px 20px
+    );
+  }
+
+  .pixel-button:hover {
+    background-color: #ff9a21; /* A slightly lighter tangerine for hover */
+  }
 }
