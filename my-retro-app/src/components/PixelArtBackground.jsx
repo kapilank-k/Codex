@@ -16,7 +16,7 @@ const PixelArtBackground = () => {
         const config = {
             starColor: '#F28500', // Matches your button color
             starCount: 200,
-            pixelSize: 2,
+            pixelSize: 8,
             twinkleSpeed: 0.05,
         };
 
@@ -42,6 +42,10 @@ const PixelArtBackground = () => {
         const animate = () => {
             // Clear the canvas each frame
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Fill the background with the desired color
+            ctx.fillStyle = '#0F110C';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Draw each star
             ctx.fillStyle = config.starColor;
@@ -103,3 +107,4 @@ const PixelArtBackground = () => {
 };
 
 export default PixelArtBackground;
+
