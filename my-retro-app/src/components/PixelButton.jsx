@@ -1,8 +1,8 @@
 import React from 'react';
 
-const PixelButton = ({ onClick, children, className = '' }) => {
+const PixelButton = ({ label, onClick }) => {
   return (
-    <button
+    <button 
       onClick={onClick}
       // We removed padding from the button itself to let the inner div handle it.
       className={`pixel-frame bg-[#F28500] hover:bg-[#ff9a21] text-[#0F110C] font-pixel text-sm ${className}`}

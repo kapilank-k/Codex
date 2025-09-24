@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import LeftPanel from './components/LeftPanel';
 import RightPanel from './components/RightPanel';
 import InteractionPanel from './components/InteractionPanel';
+import LandingPage from './components/LandingPage'; // Import the new component
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 function App() {
+  const [showLandingPage, setShowLandingPage] = useState(true); // New state to control visibility
   const [interactionTarget, setInteractionTarget] = useState(null);
   const [isLeftPanelVisible, setLeftPanelVisible] = useState(false);
   const [isRightPanelVisible, setRightPanelVisible] = useState(false);
@@ -28,6 +30,10 @@ function App() {
 
   return (
     <main className="bg-[#0F110C] min-h-screen p-8 sm:p-12 font-mono overflow-hidden">
+      {/* Conditionally render the LandingPage or the main content */}
+      {showLandingPage ? (
+        <LandingPage onStartGame={() => setShowLandingPage(false)} />
+      ) : (
       <div className="container mx-auto h-[calc(100vh-4rem)] sm:h-[calc(100vh-6rem)] relative">
         {interactionTarget ? (
           // --- NEW, ROBUST FLEXBOX-BASED INTERACTION MODE LAYOUT ---
@@ -87,6 +93,7 @@ function App() {
           </div>
         )}
       </div>
+      )}
     </main>
   );
 }
