@@ -17,6 +17,8 @@ function App() {
   const [interactionTarget, setInteractionTarget] = useState(null);
   const [isLeftPanelVisible, setLeftPanelVisible] = useState(false);
   const [isRightPanelVisible, setRightPanelVisible] = useState(false);
+  const [documentData, setDocumentData] = useState(null); // { docId, headings, summary }
+  const [selectedTopic, setSelectedTopic] = useState(null);
 
   // 2. FIXED: Function body was not correctly enclosed in curly braces {}
   const handleStartApp = () => {
@@ -55,7 +57,12 @@ function App() {
   }
 
   if (showUploadPage) {
-    return <DocumentUploadPage onStartMainApp={() => setShowUploadPage(false)} />;
+    return (
+      <DocumentUploadPage
+        onStartMainApp={() => setShowUploadPage(false)}
+        onUploadComplete={(data) => setDocumentData(data)}
+      />
+    );
   }
   
   // The main app view
@@ -102,10 +109,19 @@ function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
               <div>
                 {/* 3. FIXED: Added the missing onPlayGame prop */}
-                <LeftPanel onStartInteraction={handleStartInteraction} onPlayGame={handlePlayGame} />
+                <LeftPanel
+                  onStartInteraction={handleStartInteraction}
+                  onPlayGame={handlePlayGame}
+                  onTopicSelected={(title) => setSelectedTopic(title)}
+                  modulesData={documentData ? documentData.headings.map((h, i) => ({
+                    id: i + 1,
+                    name: h.title.toUpperCase().replace(/\s+/g, '_'),
+                    subsections: [{ id: `${i}-1`, title: h.title }]
+                  })) : undefined}
+                />
               </div>
               <div>
-                <RightPanel />
+                <RightPanel docId={documentData?.docId} topic={selectedTopic} />
               </div>
             </div>
           )}

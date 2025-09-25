@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Scrollbar styling for both panels */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+*::-webkit-scrollbar-track {
+  background: #0F110C;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #F28500;
+  border-radius: 8px;
+  border: 3px solid #0F110C;
+}
+* {
+  scrollbar-color: #F28500 #0F110C; /* Firefox */
+  scrollbar-width: auto;
+}
+
 @layer components {
   /* This is the main container that holds the border */
   .pixel-frame {

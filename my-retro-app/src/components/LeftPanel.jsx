@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FaPlay } from 'react-icons/fa'; // Import the play icon
 
 // --- BACKEND PLACEHOLDER ---
@@ -18,9 +18,14 @@ const modulesData = [
 ];
 // --- END BACKEND PLACEHOLDER ---
 
-// The component now accepts an onPlayGame prop
-const LeftPanel = ({ onStartInteraction, onPlayGame }) => {
-  const [activeModule, setActiveModule] = useState(modulesData[0].id);
+// The component now accepts an onPlayGame prop and optional modulesData
+const LeftPanel = ({ onStartInteraction, onPlayGame, modulesData: externalModules, onTopicSelected }) => {
+  const data = useMemo(() => {
+    if (Array.isArray(externalModules) && externalModules.length > 0) return externalModules;
+    return modulesData;
+  }, [externalModules]);
+
+  const [activeModule, setActiveModule] = useState(data[0]?.id);
 
   const handleModuleClick = (moduleId) => {
     setActiveModule(activeModule === moduleId ? null : moduleId);
@@ -30,19 +35,19 @@ const LeftPanel = ({ onStartInteraction, onPlayGame }) => {
     if (subsection.isInteraction) {
       onStartInteraction(subsection);
     } else {
-      console.log("Clicked normal subsection:", subsection.title);
+      if (typeof onTopicSelected === 'function') onTopicSelected(subsection.title);
     }
   };
 
-  const selectedModule = modulesData.find(m => m.id === activeModule);
+  const selectedModule = data.find(m => m.id === activeModule);
 
   return (
-    <div className="pixel-frame h-full">
+    <div className="pixel-frame h-full overflow-y-scroll pr-2" style={{ scrollbarGutter: 'stable' }}>
       <div className="pixel-frame-content p-4 text-[#60A5FA] flex flex-col h-full">
         {/* This div will grow, pushing the footer with the button to the bottom */}
-        <div className="flex-grow overflow-y-auto pr-2">
+        <div className="flex-grow overflow-y-scroll pr-2 max-h-[calc(100vh-10rem)]" style={{ scrollbarGutter: 'stable' }}>
           <div className="flex flex-col gap-4">
-            {modulesData.map((module) => (
+            {data.map((module) => (
               <div key={module.id}>
                 <h2
                   className={`font-pixel cursor-pointer p-2 text-sm md:text-base ${activeModule === module.id ? 'bg-[#F28500] text-[#0F110C]' : 'hover:bg-[#F28500]/20'}`}

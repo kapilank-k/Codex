@@ -2,10 +2,11 @@ import React, { useRef, useState } from 'react';
 import RetroGameBackground from './RetroGameBackground';
 import PixelCursor from '../assets/pixel-hand.png';
 
-const DocumentUploadPage = ({ onStartMainApp }) => {
+const DocumentUploadPage = ({ onStartMainApp, onUploadComplete }) => {
   const fileInputRef = useRef();
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState('');
+  const [isUploading, setUploading] = useState(false);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -30,9 +31,45 @@ const DocumentUploadPage = ({ onStartMainApp }) => {
     fileInputRef.current.click();
   };
 
+  const handleStart = async () => {
+    if (!selectedFile) {
+      setError('Please choose a file first.');
+      return;
+    }
+    try {
+      setUploading(true);
+      const form = new FormData();
+      form.append('file', selectedFile);
+      const url = 'http://localhost:3001/api/upload';
+      const resp = await fetch(url, {
+        method: 'POST',
+        body: form,
+      });
+      if (!resp.ok) {
+        let message = 'Upload failed';
+        try {
+          const errJson = await resp.json();
+          if (errJson && errJson.error) message = errJson.error;
+        } catch (_) {
+          const errText = await resp.text();
+          if (errText) message = errText;
+        }
+        throw new Error(message);
+      }
+      const data = await resp.json(); // { docId, headings, summary }
+      if (typeof onUploadComplete === 'function') onUploadComplete(data);
+      if (typeof onStartMainApp === 'function') onStartMainApp();
+    } catch (e) {
+      console.error('Upload error:', e);
+      setError(`Failed to upload/parse the document. ${e?.message || ''}`);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="relative overflow-hidden min-h-screen">
-      <style jsx>{`
+      <style>{`
         body {
           cursor: url(${PixelCursor}), auto;
         }
@@ -107,9 +144,10 @@ const DocumentUploadPage = ({ onStartMainApp }) => {
         {/* The "START" button */}
         <button
           className="pixel-button start"
-          onClick={typeof onStartMainApp === 'function' ? onStartMainApp : undefined}
+          onClick={handleStart}
+          disabled={isUploading}
         >
-          START
+          {isUploading ? 'UPLOADING...' : 'START'}
         </button>
       </div>
     </div>
